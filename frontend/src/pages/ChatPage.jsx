@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react';
 import { MessageBubble } from '../components/MessageBubble';
 import { LoadingIndicator } from '../components/LoadingIndicator';
 import { ChatInput } from '../components/ChatInput';
+import { ThemeToggle } from '../components/ThemeToggle';
 
 export function ChatPage({ session, messages, onSend, loading, connected }) {
   const bottomRef = useRef(null);
@@ -15,24 +16,31 @@ export function ChatPage({ session, messages, onSend, loading, connected }) {
 
   return (
     <main className="flex flex-1 flex-col min-w-0">
-      <header className="flex h-14 shrink-0 items-center border-b border-border-dark px-4">
-        <h1 className="truncate text-sm font-medium text-gray-300">
-          {session?.title || 'New chat'}
-        </h1>
-        {connected && (
-          <span className="ml-2 h-2 w-2 rounded-full bg-emerald-500" title="Connected" />
-        )}
+      <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-border px-4 dark:border-border-dark">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <h1 className="truncate text-sm font-medium text-gray-900 dark:text-gray-300">
+            {session?.title || 'New chat'}
+          </h1>
+          {connected && (
+            <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-500" title="Connected" />
+          )}
+        </div>
+        <div className="md:hidden">
+          <ThemeToggle />
+        </div>
       </header>
 
       <div className="scrollbar-thin flex-1 overflow-y-auto">
         <div className="mx-auto max-w-3xl px-4 py-6">
           {messages.length === 0 && !loading && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="mb-4 rounded-full bg-gray-800 p-4">
-                <ChatIcon className="h-8 w-8 text-gray-400" />
+              <div className="mb-4 rounded-full bg-gray-200 p-4 dark:bg-gray-800">
+                <ChatIcon className="h-8 w-8 text-gray-600 dark:text-gray-400" />
               </div>
-              <p className="text-lg font-medium text-gray-300">Start a conversation</p>
-              <p className="mt-1 text-sm text-gray-500">Send a message or create a new chat from the sidebar.</p>
+              <p className="text-lg font-medium text-gray-900 dark:text-gray-300">Start a conversation</p>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-500">
+                Send a message or create a new chat from the sidebar.
+              </p>
             </div>
           )}
           {loading && messages.length === 0 && (

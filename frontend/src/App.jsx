@@ -90,7 +90,7 @@ export default function App() {
   );
 
   return (
-    <div className="flex h-full bg-surface-dark">
+    <div className="flex h-full bg-surface dark:bg-surface-dark">
       <Sidebar
         sessions={sessions}
         currentId={currentSession?.id}

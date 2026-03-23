@@ -26,8 +26,8 @@ export function ChatInput({ onSend, disabled, placeholder = 'Message…' }) {
   }, [value]);
 
   return (
-    <div className="border-t border-border-dark bg-surface-dark p-4">
-      <div className="mx-auto flex max-w-3xl items-end gap-2 rounded-2xl border border-border-dark bg-sidebar-dark px-3 py-2 focus-within:ring-1 focus-within:ring-gray-500">
+    <div className="border-t border-border bg-surface p-4 dark:border-border-dark dark:bg-surface-dark">
+      <div className="mx-auto flex max-w-3xl items-end gap-2 rounded-2xl border border-border bg-white px-3 py-2 focus-within:ring-1 focus-within:ring-gray-400 dark:border-border-dark dark:bg-sidebar-dark dark:focus-within:ring-gray-500">
         <textarea
           ref={textareaRef}
           value={value}
@@ -36,13 +36,13 @@ export function ChatInput({ onSend, disabled, placeholder = 'Message…' }) {
           placeholder={placeholder}
           rows={1}
           disabled={disabled}
-          className="max-h-[200px] min-h-[24px] flex-1 resize-none bg-transparent py-2.5 text-sm text-gray-100 placeholder-gray-500 outline-none disabled:opacity-50"
+          className="max-h-[200px] min-h-[24px] flex-1 resize-none bg-transparent py-2.5 text-sm text-gray-900 placeholder-gray-500 outline-none disabled:opacity-50 dark:text-gray-100"
         />
         <button
           type="button"
           onClick={send}
           disabled={disabled || !value.trim()}
-          className="shrink-0 rounded-lg bg-gray-600 p-2 text-white hover:bg-gray-500 disabled:opacity-40 disabled:hover:bg-gray-600"
+          className="shrink-0 rounded-lg bg-gray-700 p-2 text-white hover:bg-gray-600 disabled:opacity-40 disabled:hover:bg-gray-700 dark:bg-gray-600 dark:hover:bg-gray-500 dark:disabled:hover:bg-gray-600"
           aria-label="Send message"
         >
           <SendIcon className="h-4 w-4" />

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { createSession, deleteSession } from '../api/client';
+import { ThemeToggle } from './ThemeToggle';
 
 export function Sidebar({ sessions, currentId, onNewChat, onSelectSession, onSessionsChange }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -33,23 +34,24 @@ export function Sidebar({ sessions, currentId, onNewChat, onSelectSession, onSes
 
   return (
     <aside
-      className={`flex shrink-0 flex-col border-r border-border-dark bg-sidebar-dark transition-[width] ${
+      className={`flex shrink-0 flex-col border-r border-border bg-sidebar transition-[width] dark:border-border-dark dark:bg-sidebar-dark ${
         collapsed ? 'w-[52px]' : 'w-64 md:w-72'
       }`}
     >
-      <div className="flex h-14 items-center gap-2 border-b border-border-dark px-3">
+      <div className="flex h-14 items-center gap-2 border-b border-border px-3 dark:border-border-dark">
         {!collapsed && (
           <button
             onClick={handleNew}
-            className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-border-dark bg-transparent px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white"
+            className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-border bg-transparent px-3 py-2 text-sm text-gray-700 hover:bg-gray-200 dark:border-border-dark dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
           >
             <PlusIcon className="h-4 w-4" />
             New chat
           </button>
         )}
+        <ThemeToggle />
         <button
           onClick={() => setCollapsed((c) => !c)}
-          className="rounded p-2 text-gray-400 hover:bg-gray-800 hover:text-white"
+          className="rounded p-2 text-gray-500 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           <MenuIcon className="h-5 w-5" />
@@ -58,14 +60,16 @@ export function Sidebar({ sessions, currentId, onNewChat, onSelectSession, onSes
       {!collapsed && (
         <nav className="scrollbar-thin flex-1 overflow-y-auto py-2">
           {sessions.length === 0 && (
-            <p className="px-3 py-4 text-center text-sm text-gray-500">No conversations yet</p>
+            <p className="px-3 py-4 text-center text-sm text-gray-500 dark:text-gray-500">No conversations yet</p>
           )}
           {sessions.map((s) => (
             <button
               key={s.id}
               onClick={() => onSelectSession(s.id)}
               className={`group flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm transition-colors ${
-                currentId === s.id ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800/70'
+                currentId === s.id
+                  ? 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-white'
+                  : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800/70'
               }`}
             >
               <ChatIcon className="h-4 w-4 shrink-0 text-gray-500" />
@@ -73,7 +77,7 @@ export function Sidebar({ sessions, currentId, onNewChat, onSelectSession, onSes
               <button
                 onClick={(e) => handleDelete(e, s.id)}
                 disabled={deletingId === s.id}
-                className="shrink-0 rounded p-1 opacity-0 text-gray-400 hover:bg-gray-700 hover:text-red-400 group-hover:opacity-100 disabled:opacity-50"
+                className="shrink-0 rounded p-1 opacity-0 text-gray-500 hover:bg-gray-200 hover:text-red-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-red-400 group-hover:opacity-100 disabled:opacity-50"
                 aria-label="Delete chat"
               >
                 <TrashIcon className="h-4 w-4" />
