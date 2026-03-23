@@ -1,8 +1,10 @@
+# Host ports use 13000/13001 because Windows often reserves 3000–3001 for Hyper-V/WSL
+# (Docker then fails with "bind: ... forbidden"). Change these if they conflict locally.
 services:
   backend:
     build: ./backend
     ports:
-      - "127.0.0.1:3001:3001"
+      - "13001:3001"
     environment:
       - PORT=3001
 
@@ -11,6 +13,6 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "127.0.0.1:3000:80"
+      - "13000:80"
     depends_on:
       - backend

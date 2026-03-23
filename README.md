@@ -78,10 +78,10 @@ From the project root:
 docker compose up --build
 ```
 
-- Frontend: **http://localhost:3000**
-- Backend is used via frontend proxy (no need to open 3001 in the browser).
+- Frontend: **http://localhost:13000**
+- Backend is used via frontend proxy (no need to open the backend port in the browser).
 
-> **Note:** The frontend container is mapped to port **3000** (not 80) to avoid conflicts with IIS or other apps using port 80 on Windows.
+> **Note:** Host ports **13000** (frontend) and **13001** (backend) avoid common Windows issues: IIS on port 80, and Hyper-V/WSL **reserving** ports like 3000–3001 so Docker cannot bind them (`bind: ... forbidden`).
 
 To stop:
 
@@ -100,6 +100,30 @@ docker compose down
 3. **Try 127.0.0.1:** In the browser use **http://127.0.0.1:3000** instead of `localhost`.
 4. **Docker Desktop (Windows):** Ensure Docker Desktop is running and using WSL2. In Settings → Resources → WSL Integration, enable integration for your distro. Restart Docker Desktop and try again.
 5. **Firewall:** Temporarily allow Node/nginx or Docker through Windows Firewall, or disable it briefly to test.
+
+### If `docker compose up` fails: "ports are not available" / "bind: ... forbidden" (Windows)
+
+Windows (Hyper-V / WSL) sometimes **reserves** TCP port ranges, so Docker cannot bind to `3000` or `3001`.
+
+1. **See excluded ranges** (PowerShell as Administrator):
+   ```powershell
+   netsh interface ipv4 show excludedportrange protocol=tcp
+   ```
+   If `3000`–`3001` fall inside a range, pick host ports **outside** it (e.g. `13000`, `13001`).
+
+2. **Edit `docker-compose.yml`** — map different **host** ports, e.g.:
+   ```yaml
+   ports:
+     - "13001:3001"   # backend
+   ```
+   and for frontend:
+   ```yaml
+   ports:
+     - "13000:80"
+   ```
+   Then open **http://localhost:13000** in the browser.
+
+3. **Restart** Docker Desktop or Windows if ranges changed after updates.
 
 ---
 
