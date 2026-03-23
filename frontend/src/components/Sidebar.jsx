@@ -34,29 +34,44 @@ export function Sidebar({ sessions, currentId, onNewChat, onSelectSession, onSes
 
   return (
     <aside
-      className={`flex shrink-0 flex-col border-r border-border bg-sidebar transition-[width] dark:border-border-dark dark:bg-sidebar-dark ${
-        collapsed ? 'w-[52px]' : 'w-64 md:w-72'
+      className={`flex shrink-0 flex-col overflow-hidden border-r border-border bg-sidebar transition-[width] duration-200 ease-out dark:border-border-dark dark:bg-sidebar-dark ${
+        collapsed ? 'w-14' : 'w-64 md:w-72'
       }`}
     >
-      <div className="flex h-14 items-center gap-2 border-b border-border px-3 dark:border-border-dark">
-        {!collapsed && (
+      {collapsed ? (
+        <div className="flex shrink-0 flex-col items-center gap-2 border-b border-border py-3 dark:border-border-dark">
+          <button
+            type="button"
+            onClick={() => setCollapsed(false)}
+            className="shrink-0 rounded-lg p-2 text-gray-600 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+            aria-label="Expand sidebar"
+            aria-expanded={false}
+          >
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
+          <ThemeToggle />
+        </div>
+      ) : (
+        <div className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-3 dark:border-border-dark">
           <button
             onClick={handleNew}
-            className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-border bg-transparent px-3 py-2 text-sm text-gray-700 hover:bg-gray-200 dark:border-border-dark dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+            className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-lg border border-border bg-transparent px-3 py-2 text-sm text-gray-700 hover:bg-gray-200 dark:border-border-dark dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
           >
-            <PlusIcon className="h-4 w-4" />
+            <PlusIcon className="h-4 w-4 shrink-0" />
             New chat
           </button>
-        )}
-        <ThemeToggle />
-        <button
-          onClick={() => setCollapsed((c) => !c)}
-          className="rounded p-2 text-gray-500 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          <MenuIcon className="h-5 w-5" />
-        </button>
-      </div>
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setCollapsed(true)}
+            className="shrink-0 rounded-lg p-2 text-gray-600 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+            aria-label="Collapse sidebar"
+            aria-expanded={true}
+          >
+            <ChevronLeftIcon className="h-5 w-5" />
+          </button>
+        </div>
+      )}
       {!collapsed && (
         <nav className="scrollbar-thin flex-1 overflow-y-auto py-2">
           {sessions.length === 0 && (
@@ -98,10 +113,18 @@ function PlusIcon({ className }) {
   );
 }
 
-function MenuIcon({ className }) {
+function ChevronLeftIcon({ className }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
+function ChevronRightIcon({ className }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
     </svg>
   );
 }
