@@ -89,6 +89,23 @@ To stop:
 docker compose down
 ```
 
+### Docker development (no rebuild on every code change)
+
+Production-style `docker compose up --build` bakes the frontend into an image; **any UI change requires `--build`** unless you use dev mounts.
+
+**Option A — simplest:** run Node on the host (see [Run Locally](#run-locally)) and skip Docker while coding.
+
+**Option B — Docker with hot reload:** use the dev compose file (bind-mounts your code, runs Vite + `node --watch`):
+
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+
+- App: **http://localhost:13000** (Vite dev server)
+- Edit files on disk → browser updates without rebuilding images.
+- First start runs `npm ci` in the containers (can take a minute); named volumes cache `node_modules` for Linux.
+- If `package.json` / lockfiles change, recreate containers: `docker compose -f docker-compose.dev.yml down` then `up` again.
+
 ### If localhost:3000 shows "Can't reach this page" / connection refused
 
 1. **Restart and rebuild:** Stop with `Ctrl+C`, then run:
